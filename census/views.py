@@ -1,7 +1,13 @@
 from django.shortcuts import render
-from django.http import Http404
+from census.models import Course,Count
 
 # Create your views here.
 
 def home(request):
-	return render(request,'homeTemplate.html')
+	#Retrieving the course list
+	courses = Course.objects.filter(promotion__number=2013)
+	#Retrieving last count
+	lastcount = Count.objects.latest('lesson__date')
+	lastcountratio = lastcount.census/lastcount.lesson.course.enrolled*100
+	
+	return render(request,'homeTemplate.html', {'courses' : courses, 'lastcount' : lastcount, 'lastcountratio' : lastcountratio})

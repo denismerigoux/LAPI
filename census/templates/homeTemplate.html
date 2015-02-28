@@ -17,10 +17,31 @@
 		<div class="col-md-4">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h2 class="panel-title">Cours</h2>
+					<h2 class="panel-title">Liste des cours</h2>
 				</div>
 				<div class="panel-body">
-					Bienvenue sur le site du Laboratoire pour l'Acquisition Périphérique d'Informations !
+					<ul>
+						{% for course in courses %}
+						<li>{{ course }}</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="panel panel-success">
+				<div class="panel-heading">
+					<h2 class="panel-title">Dernier comptage enregistré</h2>
+				</div>
+				<div class="panel-body">
+					Comptage de l'amphi n°{{lastcount.lesson.number}} de {{lastcount.lesson.cours.name}} du {{lastcount.lesson.date}}, donné en amphi {{lastcount.lesson.amphi}} par {{lastcount.lesson.professor}} :
+					<div class="progress">
+ 						<div class="progress-bar progress-bar-info" role="progressbar"
+ 							aria-valuenow="{{lastcountratio}}" aria-valuemin="0" aria-valuemax="100"
+ 							style="width: {{lastcountratio}}%;">
+    						{{lastcountratio|truncatechars:2}}%
+  						</div>
+					</div>
 				</div>
 			</div>
 		</div>
