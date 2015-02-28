@@ -7,6 +7,8 @@ class Promotion(models.Model):
 
 	def __str__(self):
 		return "X%s" % (self.number,)
+	class Meta:
+         verbose_name = "Promotion"
 
 class Amphi(models.Model):
 	name=models.CharField("Nom",max_length=60)
@@ -14,33 +16,44 @@ class Amphi(models.Model):
 
 	def __str__(self):
 		return "%s" % (self.name,)
+	class Meta:
+         verbose_name = "Amphithéâtre"
 
 class Course(models.Model):
 	name=models.CharField("Nom",max_length=6)
-	promotion=models.ForeignKey(Promotion)
+	promotion=models.ForeignKey(Promotion,verbose_name="Promotion")
 	enrolled=models.IntegerField("Nombre d'inscrits")
 
 	def __str__(self):
 		return "%s (%s)" % (self.name,self.promotion)
+	class Meta:
+         verbose_name = "Cours"
+         verbose_name_plural = "Cours"
 
 class Professor(models.Model):
 	name=models.CharField("Nom",max_length=100)
 
 	def __str__(self):
 		return "%s" % (self.name,)
+	class Meta:
+    	 verbose_name = "Professeur"
 
 class Lesson(models.Model):
 	course=models.ForeignKey(Course)
 	date=models.DateField("Date")
 	number=models.IntegerField("Numéro de la séance")
-	professor=models.ForeignKey(Professor)
+	professor=models.ForeignKey(Professor,verbose_name="Professeur")
 
 	def __str__(self):
 		return "%s %s (%s,%s)" % (self.course.name,self.number,self.course.promotion,self.date)
+	class Meta:
+         verbose_name = "Séance"
 
 class Count(models.Model):
-	lesson=models.ForeignKey(Lesson)
+	lesson=models.ForeignKey(Lesson,verbose_name="Séance")
 	census=models.IntegerField("Nombre d'éléves présents")
 
 	def __str__(self):
 		return "%s/%s : %s" % (self.census,self.lesson.course.enrolled,self.lesson)
+	class Meta:
+         verbose_name = "Comptage"
