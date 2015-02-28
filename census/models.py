@@ -43,6 +43,7 @@ class Lesson(models.Model):
 	date=models.DateField("Date")
 	number=models.IntegerField("Numéro de la séance")
 	professor=models.ForeignKey(Professor,verbose_name="Professeur")
+	amphi=models.ForeignKey(Amphi,verbose_name="Amphithéâtre")
 
 	def __str__(self):
 		return "%s %s (%s,%s)" % (self.course.name,self.number,self.course.promotion,self.date)
