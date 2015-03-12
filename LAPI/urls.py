@@ -10,5 +10,6 @@ urlpatterns = patterns('census.views',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^home/$', 'home'),
     url(r'^$', 'home'),
-    url(r'comptage/$', 'comptage')
+    url(r'^comptage/$', 'comptage'),
+    url(r'^cours/(?P<id_cours>\d+)$', 'cours'),
 )

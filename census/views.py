@@ -14,3 +14,7 @@ def home(request):
 
 def comptage(request):
 	return render(request,'comptageTemplate.html')
+
+def cours(request, id_cours):
+	course = Course.objects.get(id=id_cours)
+	return render(request, 'coursTemplate.html')
