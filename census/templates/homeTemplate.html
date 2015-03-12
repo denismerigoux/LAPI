@@ -10,11 +10,11 @@
 					<h2 class="panel-title">Présentation</h2>
 				</div>
 				<div class="panel-body">
-					<p>Bienvenue sur le site du Laboratoire pour l'Acquisition Périphérique d'Informations !<p>
+					<p>Bienvenue sur le site du <b>Laboratoire pour l'Acquisition Périphérique d'Informations !</b></p>
 					<p>Tu t'ennuies en amphi ? Tu remarque que les rangs sont de plus en plus clairsemés et tu 
 					aimerais savoir plus précisément <em>combien</em> de tes camarades de promotions choissisent
-					la douceur de leur oreiller plutôt que la rudesse des bancs d'Arago ?<p>
-					<p>Une seule solution : compter ! Suis les conseils du LAPI pour un comptage réussi et inscris tes résultats sur le site pour une vision globale du taux d'invisibilité en amphi de ta promotion.</p>
+					la douceur de leur oreiller plutôt que la rudesse des bancs d'Arago ?</p>
+					<p>Une seule solution : compter ! Suis <a href="{% url 'census.views.comptage' %}">les conseils du LAPI</a> pour un comptage réussi et inscris tes résultats sur le site pour une vision globale du taux d'invisibilité en amphi de ta promotion.</p>
 				</div>
 			</div>
 			<div class="panel panel-success">
@@ -33,6 +33,7 @@
 					<div class="progress">
  						<div class="progress-bar progress-bar-info" role="progressbar"
  							aria-valuenow="{{lastcountratio}}" aria-valuemin="0" aria-valuemax="100"
+ 							aria-valuenow="{{lastcountratio}}" aria-valuemin="0" aria-valuemax="100"
  							style="width: {{lastcountratio}}%;">
     						{{lastcount.census}}/{{lastcount.lesson.course.enrolled}} ({{lastcountratio}}%)
   						</div>
@@ -50,13 +51,13 @@
 				<div class="panel-body">
 					<ul class="list-group">
 						{% for course in courses %}
-							<li class="list-group-item">{{course.name}}
+							<a class="list-group-item" href="{% url 'census.views.cours' id_cours=course.id %}">{{course.name}}
 							{% if course.promotion.number|divisibleby:2 %}
 								(<span style='color:#D62222'>X{{course.promotion.number}}</span>)
 							{% else %}
 								(<span style='color:#F2E52E'>X{{course.promotion.number}}</span>)
 							{% endif %}
-							</li>
+							</a>
 						{% endfor %}
 					</ul>
 				</div>
