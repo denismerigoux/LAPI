@@ -3,6 +3,51 @@
 {% block nav %}{% endblock %}
 {% block content %}
 <div class="container-fluid">
-	
+	<div class="well">
+		<h1>{{course.name}} – Promotion
+		{% if course.promotion.number|divisibleby:2 %}
+			<span style='color:#D62222'>X{{course.promotion.number}}</span>
+		{% else %}
+			<span style='color:#F2E52E'>X{{course.promotion.number}}</span>
+		{% endif %}</h1>
+		<p>Nombre d'inscrits : {{course.enrolled}}</p>
+	</div>
+	<div class="row">
+		{% for lesson in lessons %}
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h2 class="panel-title">Séance n°{{lesson.number}} <i>{{lesson.title}}</i> – {{lesson.date|date:"d/m/y"}}, {{lesson.amphi}}</h2>
+				</div>
+				<div class="panel-body">
+					{% if lesson.counts %}
+					<p>Estimation du taux de visibilité pour cette séance :</p>
+					<div class="progress">
+ 						<div class="progress-bar progress-bar-info" role="progressbar"
+ 							aria-valuenow="{{lesson.totalratio}}" aria-valuemin="0" aria-valuemax="100"
+ 							style="width: {{lesson.totalratio}}%;">
+    						{{lesson.totalratio}}%
+  						</div>
+  					</div>
+					<div class="list group">
+						{% for count in lesson.counts %}
+						<div class="list-group-item">
+							<p>Résultat du comptage : <b>{{count.census}}/{{course.enrolled}}</b></p>
+  							<p>{{count.comment}}</p>
+  						<p style="text-align:right;font-style:italic">{{count.signature}}</p>
+  						</div>
+  						{% endfor %}
+  					</div>
+  					{% else %}
+					<div class="alert alert-warning">
+						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+  						<span class="sr-only">Attention : </span>Aucun comptage n'a été soumis pour cette séance
+					</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
 </div>
 {% endblock %}

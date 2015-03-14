@@ -41,7 +41,7 @@ class Professor(models.Model):
 class Lesson(models.Model):
 	course=models.ForeignKey(Course)
 	date=models.DateField("Date")
-	number=models.IntegerField("Numéro de la séance",blank=True,null=True)
+	number=models.IntegerField("Numéro de la séance")
 	professor=models.ForeignKey(Professor,verbose_name="Professeur",blank=True,null=True)
 	amphi=models.ForeignKey(Amphi,verbose_name="Amphithéâtre")
 	title=models.CharField("Titre",max_length=140,blank=True,null=True)
