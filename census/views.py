@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from census.models import Course,Count,Lesson
 from django import forms
+from django.http import HttpResponseRedirect
 
 #Auxiliariy functions
 
@@ -39,8 +40,15 @@ def getCourseStatistics(course):
 	course.lessonscount= course.lessons.count()
 	return course
 
-class addCountForm(forms.Form):
-	course = forms.CharField(label="Cours",max_length=60)
+class addCountForm(forms.ModelForm):
+    class Meta:
+        model = Count
+    def clean_census(self):
+    	census = self.cleaned_data['census']
+    	enrolled = self.cleaned_data['lesson'].course.enrolled
+    	if (census>enrolled):
+        	raise forms.ValidationError("Tu as compté plus de gens qu'il n'y a de personnes inscrites dans ce cours !")
+    	return census  # Ne pas oublier de renvoyer le contenu du champ traité
 
 #Views
 
@@ -69,15 +77,14 @@ def addcount(request):
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         form = addCountForm(request.POST)
+        form.fields["lesson"].queryset = Lesson.objects.all().order_by('-date')
         # check whether it's valid:
         if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            return HttpResponseRedirect('/')
-
+            count = form.save()
+            return HttpResponseRedirect('/cours/'+ str(count.lesson.course.id))
     # if a GET (or any other method) we'll create a blank form
     else:
         form = addCountForm()
+        form.fields["lesson"].queryset = Lesson.objects.all().order_by('-date') 
 
     return render(request, 'addcountTemplate.html', {'form': form})

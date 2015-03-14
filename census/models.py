@@ -48,11 +48,11 @@ class Lesson(models.Model):
 
 	def __str__(self):
 		if ((self.number is not None) & (self.title is not None)):
-			return "%s %s : %s (%s,%s)" % (self.course.name,self.number,self.title,self.course.promotion,self.date)
+			return "%s n°%s : %s (%s, %s)" % (self.course.name,self.number,self.title,self.course.promotion,self.date)
 		elif (self.number is not None):
-			return "%s %s (%s,%s)" % (self.course.name,self.number,self.course.promotion,self.date)
+			return "%s n°%s (%s, %s)" % (self.course.name,self.number,self.course.promotion,self.date)
 		elif (self.title is not None):
-			return "%s : %s (%s,%s)" % (self.course.name,self.title,self.course.promotion,self.date)
+			return "%s : %s (%s, %s)" % (self.course.name,self.title,self.course.promotion,self.date)
 		else:
 			return "%s (%s,%s)" % (self.course.name,self.course.promotion,self.date)
 
