@@ -4,16 +4,33 @@
 {% block content %}
 <div class="container-fluid">
 	<div class="well">
-		<h1>{{course.name}} – Promotion
-		{% if course.promotion.number|divisibleby:2 %}
-			<span style='color:#D62222'>X{{course.promotion.number}}</span>
-		{% else %}
-			<span style='color:#F2E52E'>X{{course.promotion.number}}</span>
-		{% endif %}</h1>
-		<p>Nombre d'inscrits : {{course.enrolled}}</p>
+		<div class="row">
+			<div class="col-md-4">
+				<h1>{{course.name}}
+				{% if course.promotion.number|divisibleby:2 %}
+					(<span style='color:#D62222'>X{{course.promotion.number}}</span>)
+				{% else %}
+					(<span style='color:#F2E52E'>X{{course.promotion.number}}</span>)
+				{% endif %}
+				</h1>
+				<p>Nombre d'inscrits : {{course.enrolled}}</p>
+			</div>
+			<div class="col-md-8">
+				{% if course.totalratio != 0 %}
+				<h3>Taux de visibilité du cours :</h3>
+				<div class="progress">
+ 					<div class="progress-bar progress-bar-{{course.progressbarclass}}" role="progressbar"
+ 							aria-valuenow="{{course.totalratio}}" aria-valuemin="0" aria-valuemax="100"
+ 							style="width: {{course.totalratio}}%;">
+    					{{course.totalratio}} %
+  					</div>
+  				</div>
+				{% endif %}
+			</div>
+		</div>
 	</div>
 	<div class="row">
-		{% for lesson in lessons %}
+		{% for lesson in course.lessons %}
 		<div class="col-md-4">
 			<div class="panel panel-default">
 				<div class="panel-heading">
@@ -23,17 +40,16 @@
 					{% if lesson.counts %}
 					<p>Estimation du taux de visibilité pour cette séance :</p>
 					<div class="progress">
- 						<div class="progress-bar progress-bar-info" role="progressbar"
+ 						<div class="progress-bar progress-bar-{{lesson.progressbarclass}}" role="progressbar"
  							aria-valuenow="{{lesson.totalratio}}" aria-valuemin="0" aria-valuemax="100"
  							style="width: {{lesson.totalratio}}%;">
-    						{{lesson.totalratio}}%
+    						{{lesson.totalratio}} %
   						</div>
   					</div>
 					<div class="list group">
 						{% for count in lesson.counts %}
 						<div class="list-group-item">
-							<p>Résultat du comptage : <b>{{count.census}}/{{course.enrolled}}</b></p>
-  							<p>{{count.comment}}</p>
+							<p>Résultat du comptage : <b>{{count.census}}/{{course.enrolled}}</b>. {{count.comment}}</p>
   						<p style="text-align:right;font-style:italic">{{count.signature}}</p>
   						</div>
   						{% endfor %}

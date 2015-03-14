@@ -31,11 +31,11 @@
 					}
 					{% endif %}
 					<div class="progress">
- 						<div class="progress-bar progress-bar-info" role="progressbar"
- 							aria-valuenow="{{lastcountratio}}" aria-valuemin="0" aria-valuemax="100"
- 							aria-valuenow="{{lastcountratio}}" aria-valuemin="0" aria-valuemax="100"
- 							style="width: {{lastcountratio}}%;">
-    						{{lastcount.census}}/{{lastcount.lesson.course.enrolled}} ({{lastcountratio}}%)
+ 						<div class="progress-bar progress-bar-{{lastcount.progressbarclass}}" role="progressbar"
+ 							aria-valuenow="{{lastcount.ratio}}" aria-valuemin="0" aria-valuemax="100"
+ 							aria-valuenow="{{lastcount.ratio}}" aria-valuemin="0" aria-valuemax="100"
+ 							style="width: {{lastcount.ratio}}%;">
+    						{{lastcount.census}}/{{lastcount.lesson.course.enrolled}} ({{lastcount.ratio}}%)
   						</div>
   					</div>
   					<p>{{lastcount.comment}}</p>
@@ -49,6 +49,7 @@
 					<h2 class="panel-title">Liste des cours</h2>
 				</div>
 				<div class="panel-body">
+					<p>Le pourcentage est le taux de visibilité du cours, le ratio correspond au nombre de cours comptés.
 					<ul class="list-group">
 						{% for course in courses %}
 							<a class="list-group-item" href="{% url 'census.views.cours' id_cours=course.id %}">{{course.name}}
@@ -57,6 +58,8 @@
 							{% else %}
 								(<span style='color:#F2E52E'>X{{course.promotion.number}}</span>)
 							{% endif %}
+							<span class="badge">{{course.nonnulllessonscount}} / {{course.lessonscount}}</span>
+							<span class="badge">{{course.totalratio}} %</span>
 							</a>
 						{% endfor %}
 					</ul>
