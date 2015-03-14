@@ -22,7 +22,7 @@
 	{# Load the StickyFooter add-on #}
 	<link href="{% static 'sticky-footer.css' %}" media="all" rel="stylesheet" />
 </head> 
-<body>
+<body style="background-image: url('{% static 'Amphi_Poincare.JPG' %}'); background-size:cover">
 	<nav>
 		<nav class="navbar navbar-default">
 			<div class="container-fluid">
@@ -35,8 +35,6 @@
 						<span class="icon-bar"></span>
 					</button>
 					<a class="navbar-brand" href="{% url 'census.views.home' %}"><b>LAPI</b></a>
-					<a class="navbar-brand" href="{% url 'census.views.home' %}">Accueil</a>
-					<a class="navbar-brand" href="{% url 'census.views.comptage' %}">Instructions de comptage</a>
 				</div>
 
 				<!-- Collect the nav links, forms, and other content for toggling -->
@@ -48,6 +46,8 @@
 						{% endblock %}
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
+						<a class="navbar-brand" href="{% url 'census.views.home' %}">Accueil</a>
+						<a class="navbar-brand" href="{% url 'census.views.comptage' %}">Instructions de comptage</a>
 					</ul>
 				</div><!-- /.navbar-collapse -->
 			</div><!-- /.container-fluid -->
