@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from census.models import Course,Count,Lesson
 from django import forms
+from django.db.models.aggregates import Max
+from datetime import *
 from django.http import HttpResponseRedirect
 
 #Auxiliariy functions
@@ -32,7 +34,7 @@ def getCourseStatistics(course):
 			course.nonnulllessonscount += 1
 		else:
 			lesson.counts = None
-	if (course.lessons.count() != 0):
+	if (course.nonnulllessonscount != 0):
 		course.totalratio = round(course.totalsum / course.nonnulllessonscount)
 		course.progressbarclass = getProgressBarClass(course.totalratio)
 	else:
@@ -54,13 +56,17 @@ class addCountForm(forms.ModelForm):
 
 def home(request):
 	#Retrieving the course list and the statistics
-	courses = Course.objects.filter(promotion__number=2014)
+	courses = Course.objects.all().annotate(latest_lesson_date=Max('lesson__date')).order_by('-latest_lesson_date')
+	#courses = Course.objects.all().order_by('-promotion')
 	for course in courses:
 		course = getCourseStatistics(course)
 	#Retrieving last count
-	lastcount = Count.objects.latest('date')
-	lastcount.ratio = round(lastcount.census/lastcount.lesson.course.enrolled*100)
-	lastcount.progressbarclass= getProgressBarClass(lastcount.ratio)
+	if (Count.objects.all().count() != 0):
+		lastcount = Count.objects.latest('date')
+		lastcount.ratio = round(lastcount.census/lastcount.lesson.course.enrolled*100)
+		lastcount.progressbarclass= getProgressBarClass(lastcount.ratio)
+	else:
+		lastcount = None
 
 	return render(request,'homeTemplate.html', {'courses' : courses, 'lastcount' : lastcount,})
 
@@ -77,7 +83,7 @@ def addcount(request):
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         form = addCountForm(request.POST)
-        form.fields["lesson"].queryset = Lesson.objects.all().order_by('-date')
+        form.fields["lesson"].queryset = Lesson.objects.filter(date__lt=datetime.now()+timedelta(7)).order_by('-date')
         # check whether it's valid:
         if form.is_valid():
             count = form.save()

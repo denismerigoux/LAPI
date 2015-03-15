@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Amphi',
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', auto_created=True, primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
                 ('name', models.CharField(verbose_name='Nom', max_length=60)),
                 ('capacity', models.IntegerField(verbose_name='Capacité')),
             ],
@@ -25,8 +25,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Count',
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', auto_created=True, primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
                 ('census', models.IntegerField(verbose_name="Nombre d'éléves présents")),
+                ('date', models.DateTimeField(verbose_name='Soumis le', auto_now=True)),
+                ('comment', models.TextField(verbose_name='Commentaires', null=True, blank=True)),
+                ('signature', models.CharField(verbose_name='signature', max_length=120)),
             ],
             options={
                 'verbose_name': 'Comptage',
@@ -36,8 +39,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Course',
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', auto_created=True, primary_key=True)),
-                ('name', models.CharField(verbose_name='Nom', max_length=6)),
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
+                ('name', models.CharField(verbose_name='Nom', max_length=60)),
                 ('enrolled', models.IntegerField(verbose_name="Nombre d'inscrits")),
             ],
             options={
@@ -49,9 +52,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Lesson',
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', auto_created=True, primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
                 ('date', models.DateField(verbose_name='Date')),
                 ('number', models.IntegerField(verbose_name='Numéro de la séance')),
+                ('title', models.CharField(verbose_name='Titre', max_length=140, null=True, blank=True)),
                 ('amphi', models.ForeignKey(verbose_name='Amphithéâtre', to='census.Amphi')),
                 ('course', models.ForeignKey(to='census.Course')),
             ],
@@ -63,7 +67,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Professor',
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', auto_created=True, primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
                 ('name', models.CharField(verbose_name='Nom', max_length=100)),
             ],
             options={
@@ -74,7 +78,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Promotion',
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', auto_created=True, primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
                 ('number', models.IntegerField(verbose_name='Numéro')),
             ],
             options={
@@ -85,7 +89,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='lesson',
             name='professor',
-            field=models.ForeignKey(verbose_name='Professeur', to='census.Professor'),
+            field=models.ForeignKey(null=True, verbose_name='Professeur', to='census.Professor', blank=True),
             preserve_default=True,
         ),
         migrations.AddField(

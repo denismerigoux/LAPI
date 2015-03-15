@@ -11,7 +11,7 @@
 				</div>
 				<div class="panel-body">
 					<p>Bienvenue sur le site du <b>Laboratoire pour l'Acquisition Périphérique d'Informations !</b></p>
-					<p>Tu t'ennuies en amphi ? Tu remarque que les rangs sont de plus en plus clairsemés et tu 
+					<p>Tu t'ennuies en amphi ? Tu remarques que les rangs sont de plus en plus clairsemés et tu 
 					aimerais savoir plus précisément <em>combien</em> de tes camarades de promotions choissisent
 					la douceur de leur oreiller plutôt que la rudesse des bancs d'Arago ?</p>
 					<p>Une seule solution : compter ! Suis <a href="{% url 'census.views.comptage' %}">les conseils du LAPI</a> pour un comptage réussi et inscris tes résultats sur le site pour une vision globale du taux d'invisibilité en amphi de ta promotion.</p>
@@ -23,12 +23,11 @@
 				</div>
 				<div class="panel-body">
 					{% if lastcount.lesson.course.name == "Amphis 0" %}
-						<p>Comptage de l'amphi 0 de {{lastcount.lesson.title|lower}} des {{lastcount.lesson.course.promotion}}, donné le {{lastcount.lesson.date|date:"d/m/y"}} en amphi {{lastcount.lesson.amphi}} :</p>
-					{% elif astcount.lesson.course.name == "Conférences scientifiques" %}
-						<p>Comptage de la conférence scientifique de {{lastcount.lesson.title|lower}} des {{lastcount.lesson.course.promotion}}, donné le {{lastcount.lesson.date|date:"d/m/y"}} en amphi {{lastcount.lesson.amphi}} :</p>
+						<p>Comptage de l'amphi 0 de {{lastcount.lesson.title}} des {{lastcount.lesson.course.promotion}}, donné le {{lastcount.lesson.date|date:"d/m/y"}} en amphi {{lastcount.lesson.amphi}} :</p>
+					{% elif lastcount.lesson.course.name == "Conférences scientifiques" %}
+						<p>Comptage de la conférence scientifique de {{lastcount.lesson.title}} des {{lastcount.lesson.course.promotion}}, donné le {{lastcount.lesson.date|date:"d/m/y"}} en amphi {{lastcount.lesson.amphi}} :</p>
 					{% else %}
 						<p>Comptage de l'amphi n°{{lastcount.lesson.number}} de {{lastcount.lesson.course.name}} des {{lastcount.lesson.course.promotion}}, donné le {{lastcount.lesson.date|date:"d/m/y"}} en amphi {{lastcount.lesson.amphi}} :</p>
-					}
 					{% endif %}
 					<div class="progress">
  						<div class="progress-bar progress-bar-{{lastcount.progressbarclass}}" role="progressbar"

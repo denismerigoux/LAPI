@@ -47,14 +47,14 @@ class Lesson(models.Model):
 	title=models.CharField("Titre",max_length=140,blank=True,null=True)
 
 	def __str__(self):
-		if ((self.number is not None) & (self.title is not None)):
-			return "%s n°%s : %s (%s, %s)" % (self.course.name,self.number,self.title,self.course.promotion,self.date)
-		elif (self.number is not None):
-			return "%s n°%s (%s, %s)" % (self.course.name,self.number,self.course.promotion,self.date)
-		elif (self.title is not None):
-			return "%s : %s (%s, %s)" % (self.course.name,self.title,self.course.promotion,self.date)
+		if ((self.number != '' ) & (self.title != '')):
+			return "%s %s n°%s : %s (%s)" % (self.course.promotion,self.course.name,self.number,self.title,self.date)
+		elif (self.number != ''):
+			return "%s %s n°%s (%s)" % (self.course.promotion,self.course.name,self.number,self.date)
+		elif (self.title != ''):
+			return "%s %s : %s (%s)" % (self.course.promotion,self.course.name,self.title,self.date)
 		else:
-			return "%s (%s,%s)" % (self.course.name,self.course.promotion,self.date)
+			return "%s %s (%s)" % (self.course.promotion,self.course.name,self.date)
 
 	class Meta:
          verbose_name = "Séance"
@@ -63,7 +63,7 @@ class Count(models.Model):
 	lesson=models.ForeignKey(Lesson,verbose_name="Séance")
 	census=models.IntegerField("Nombre d'éléves présents")
 	date=models.DateTimeField("Soumis le",auto_now="True")
-	comment=models.TextField("Commentaires")
+	comment=models.TextField("Commentaires",blank=True,null=True)
 	signature=models.CharField("signature",max_length=120)
 
 

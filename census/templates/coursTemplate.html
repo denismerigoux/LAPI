@@ -34,7 +34,11 @@
 		<div class="col-md-4">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h2 class="panel-title">Séance n°{{lesson.number}} <i>{{lesson.title}}</i> – {{lesson.date|date:"d/m/y"}}, {{lesson.amphi}}</h2>
+					<h2 class="panel-title">Séance n°{{lesson.number}} <i>{{lesson.title}}</i> – {{lesson.date|date:"d/m/y"}}, en {{lesson.amphi}}
+					{% if lesson.professor %}
+					par {{lesson.professor.name}}
+					{% endif %}
+					</h2>
 				</div>
 				<div class="panel-body">
 					{% if lesson.counts %}
