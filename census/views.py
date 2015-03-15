@@ -83,7 +83,7 @@ def addcount(request):
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         form = addCountForm(request.POST)
-        form.fields["lesson"].queryset = Lesson.objects.filter(date__lt=datetime.now()+timedelta(7)).order_by('-date')
+        form.fields["lesson"].queryset = Lesson.objects.filter(date__lte=datetime.now()).order_by('-date')
         # check whether it's valid:
         if form.is_valid():
             count = form.save()
@@ -91,6 +91,6 @@ def addcount(request):
     # if a GET (or any other method) we'll create a blank form
     else:
         form = addCountForm()
-        form.fields["lesson"].queryset = Lesson.objects.all().order_by('-date') 
+        form.fields["lesson"].queryset = Lesson.objects.filter(date__lte=datetime.now()).order_by('-date') 
 
     return render(request, 'addcountTemplate.html', {'form': form})
