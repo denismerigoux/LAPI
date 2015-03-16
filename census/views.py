@@ -18,7 +18,7 @@ def getProgressBarClass(ratio):
 		return "danger"
 
 def getCourseStatistics(course):
-	course.lessons = Lesson.objects.filter(course=course).order_by('number')
+	course.lessons = Lesson.objects.filter(course=course,date__lte=datetime.today()).order_by('number')
 	course.totalsum = 0
 	course.nonnulllessonscount = 0
 	for lesson in course.lessons:
@@ -56,7 +56,7 @@ class addCountForm(forms.ModelForm):
 
 def home(request):
 	#Retrieving the course list and the statistics
-	courses = Course.objects.all().annotate(latest_lesson_date=Max('lesson__date')).order_by('-latest_lesson_date')
+	courses = Course.objects.annotate(latest_lesson_date=Max('lesson__date')).filter(latest_lesson_date__lte=datetime.today()).order_by('-latest_lesson_date')
 	#courses = Course.objects.all().order_by('-promotion')
 	for course in courses:
 		course = getCourseStatistics(course)
