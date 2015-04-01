@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from census.models import Course,Count,Lesson
 from django import forms
-from django.db.models.aggregates import Max
+from django.db.models.aggregates import Min
 from datetime import *
 from django.http import HttpResponseRedirect
 
@@ -56,7 +56,7 @@ class addCountForm(forms.ModelForm):
 
 def home(request):
 	#Retrieving the course list and the statistics
-	courses = Course.objects.annotate(latest_lesson_date=Max('lesson__date')).filter(latest_lesson_date__lte=datetime.today()).order_by('-latest_lesson_date')
+	courses = Course.objects.annotate(first_lesson_date=Min('lesson__date')).filter(first_lesson_date__lte=datetime.today()).order_by('-first_lesson_date')
 	#courses = Course.objects.all().order_by('-promotion')
 	for course in courses:
 		course = getCourseStatistics(course)
@@ -83,7 +83,7 @@ def addcount(request):
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         form = addCountForm(request.POST)
-        form.fields["lesson"].queryset = Lesson.objects.filter(date__lte=datetime.now(),date__gte=datetime.now()-datetime.timedelta(30)).order_by('-date')
+        form.fields["lesson"].queryset = Lesson.objects.filter(date__lte=datetime.now(),date__gte=datetime.now()-timedelta(30)).order_by('-date')
         # check whether it's valid:
         if form.is_valid():
             count = form.save()
